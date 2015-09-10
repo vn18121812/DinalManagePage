@@ -1,0 +1,202 @@
+
+.logo{
+    width:110px;
+}
+
+.logotip {
+  margin-left: 8.7%;
+    margin-top: 10%;
+   
+}
+
+.eachBtnFt {
+    background-color: #72d32c;
+    height: 140px;
+    width:21%; 
+    float: left;
+    margin-left: 25px;
+}
+
+
+.butttons {
+    width: 60%;
+    height: 500px;
+    float: left;
+    margin-top: 7%;
+    margin-left: 5%;
+    min-width: 640px;
+    
+}
+
+.eachBtnSd {
+    background-color: #72d32c;
+    height: 140px;
+    width:21%; 
+    float: left; 
+    margin-left: 25px;
+}
+
+.sdString {
+    padding-top: 2%;
+    clear: both;
+}
+
+.ftString {
+    
+}
+
+.documents {
+    width:25%;
+    height:300px;
+    float: right;
+    margin-top: 7%;
+    background-color: #efefe7;
+    padding-left: 2.7%;
+    min-width: 260px;
+    
+   
+    
+}
+
+.eachBtnSdSupply {
+    background-color: #1eb519;
+    height: 140px;
+    width:21%; 
+    float: left; 
+    margin-left: 25px;
+}
+@font-face {
+    font-family: 'Core Sans M 55 Medium';
+    src: url('shrift/Core Sans M 55 Medium.otf');
+} 
+
+@font-face {
+  font-family: 'Core Sans M 45 Regular';
+  src: url('../shrift/Core Sans M 45 Regular.otf') ;
+
+}
+}
+@font-face {
+    font-family: 'Core Sans M 35 Light';
+    src: url('../shrift/Core Sans M 35 Light.otf');
+} 
+
+
+/*font-family: 'Core Sans M 45 Regular',Arial;
+*/
+
+
+
+
+.fright {
+    float: right;
+}
+
+.purchaseDepartment {
+    margin-top: 60px;
+    margin-left: 7%;
+    font-size:17px;
+    color: #ffffff;
+    width: 60%;
+    font-family: 'Core Sans M 35 Light';
+    line-height: 1.2;
+    
+}
+
+.purchaseDepartmentHeader {
+    font-family:'Core Sans M 45 Regular'; 
+    font-size:19px;
+    color: #ffffff;
+    width: 100%;
+     margin-left: 7%;
+    margin-right: 10px;
+    
+}
+
+.generalOrder {
+    padding-top: 20px;
+    padding-right: 10px;
+}
+
+.tipHeader {
+    font-family:'Core Sans M 45 Regular'; 
+    font-size:19px;
+    color: #ffffff;
+    width: 70%;
+    margin-left: 5%;
+    margin-right: 10px;
+    margin-top: 80px;
+    line-height: 1.1;
+    padding-bottom: 10px;
+}
+
+.unHeader {
+    font-family:'Core Sans M 45 Regular'; 
+    font-size:19px;
+    color: #ffffff;
+    width: 100%;
+     margin-left: 5%;
+    margin-right: 10px;
+    margin-top: 98px;
+}
+
+.purchaseDepartmentFake {
+    margin-top: 60px;
+    margin-left: 12%;
+    font-size:16px;
+    color: #ffffff;
+    width: 60%;
+    font-family: 'Core Sans M 35 Light';
+    line-height: 1.2;
+    height: 38px;
+}
+
+
+
+.header {
+    font-family: 'Core Sans M 45 Regular';
+    font-size:32px;
+    font-weight: 500;
+    
+}
+
+.fifteen {
+    min-width: 57px;
+    margin-top: 18px;
+    width:22%;
+    height: 57px;
+    background-color:#028e37;
+    color:#ffffff;
+    font-size: 36px;
+    text-align: center;
+    line-height: 1.7;
+    font-family:'CoreSansM45Regular';
+    float: left;
+}
+
+.tfhs {
+    min-width: 57px;
+    margin-top: 17px;
+    width:22%;
+    height: 59px;
+    background-color:#028e37;
+    color:#ffffff;
+    font-size: 20px;
+    text-align: center;
+    line-height: 3.0;
+    font-family:'Core Sans M 45 Regular';
+    float: left;
+    
+}
+
+.fromTomorrowText {
+    padding-top: 25px;
+    padding-left: 70px;   
+    font-family:'Core Sans M 45 Regular'; 
+    font-size:17px;
+    line-height: 1;
+}
+
+.fromToday {
+    clear: both;
+}
