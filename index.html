@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
     <head>
@@ -44,6 +44,215 @@
             </div>
         </div>
     </div>
+<SCRIPT LANGUAGE="VBScript">
+Sub Producent(ConnString) '### Mode = 0
+	Set Conn = CreateObject("ADODB.Connection")
+	Conn.Open ConnString
+	SQL = "DECLARE @d datetime;SET @d = CAST(FLOOR(CAST(GETDATE() as float)) as datetime);SELECT COUNT(*) AS Liczba FROM oferty WHERE realizacja < @d AND do_arch=0 UNION ALL SELECT COUNT(*) AS Liczba FROM oferty WHERE realizacja=@d AND do_arch=0 UNION ALL SELECT COUNT(*) AS Liczba FROM oferty WHERE realizacja=@d+1 AND do_arch=0;"
+	Set rst = Conn.Execute(SQL)
+
+
+	dok_wczoraj.innerText = root.selectSingleNode("data[@id='11']/data[@id='4' && @name='value']").text & " " & rst("Liczba")
+	rst.movenext
+	dok_dzisiajTekst.innerText = root.selectSingleNode("data[@id='11']/data[@id='3' && @name='value']").text & " " & rst("Liczba")
+	rst.movenext
+	dok_jutro.innerText = root.selectSingleNode("data[@id='11']/data[@id='2' && @name='value']").text & " " & rst("Liczba")
+
+	Set rst = nothing
+	Conn.Close
+
+	Set Conn = Nothing
+	Button1.style.display = "" '### Rekord Nowa oferta
+	Button2.style.display = "" '### Rekord Nowe zlecenie produkcyjne
+	Button3.style.display = "" '### Rekord Nowe zamowienie
+	Button4.style.display = "" '### Rekord Otworz istniejacy dokument
+	Button5.style.display = "" '### Rekord Zamowienie zbiorcze
+	Button6.style.display = "" '### Rekord Nowa optymalizacja
+	Button7.style.display = "none" '### Rekord Wyslij odbierz zlecenie
+	Button8.style.display = "" '### Rekord Magazyn
+
+End Sub
+
+Sub ProdDeal(ConnString) '### Mode = 2
+	Set Conn = CreateObject("ADODB.Connection")
+	Conn.Open ConnString
+
+
+	SQL = "DECLARE @d datetime;SET @d = CAST(FLOOR(CAST(GETDATE() as float)) as datetime);SELECT COUNT(*) AS Liczba FROM oferty WHERE realizacja < @d AND do_arch=0 UNION ALL SELECT COUNT(*) AS Liczba FROM oferty WHERE realizacja=@d AND do_arch=0 UNION ALL SELECT COUNT(*) AS Liczba FROM oferty WHERE realizacja=@d+1 AND do_arch=0;"
+	Set rst = Conn.Execute(SQL)
+
+	
+	dok_wczoraj.innerText = root.selectSingleNode("data[@id='11']/data[@id='4' && @name='value']").text & " " & rst("Liczba")
+	rst.movenext
+	dok_dzisiajTekst.innerText = root.selectSingleNode("data[@id='11']/data[@id='3' && @name='value']").text & " " & rst("Liczba")
+	rst.movenext
+	dok_jutro.innerText = root.selectSingleNode("data[@id='11']/data[@id='2' && @name='value']").text & " " & rst("Liczba")
+
+
+
+	Set rst = nothing
+	Conn.Close
+	Set Conn = Nothing
+	Button1.style.display = "" '### Rekord Nowa oferta
+	Button2.style.display = "" '### Rekord Nowe zlecenie produkcyjne
+	Button3.style.display = "" '### Rekord Nowe zamowienie
+	Button4.style.display = "" '### Rekord Otworz istniejacy dokument
+	Button5.style.display = "" '### Rekord Zamowienie zbiorcze
+	Button6.style.display = "" '### Rekord Nowa optymalizacja
+	Button7.style.display = "" '### Rekord Wyslij odbierz zlecenie
+	Button8.style.display = "" '### Rekord Magazyn
+
+End Sub
+
+Sub Dealer(ConnString) '### Mode = 1
+	dok_wczoraj.innerText = root.selectSingleNode("data[@id='11']/data[@id='2' && @name='value']").text & "Brak danych"
+	dok_dzisiajTekst.innerText = root.selectSingleNode("data[@id='11']/data[@id='3' && @name='value']").text
+	dok_dzisiaj.innerText = "Brak danych"
+	dok_jutro.innerText = root.selectSingleNode("data[@id='11']/data[@id='4' && @name='value']").text & "Brak danych"
+	Button1.style.display = "" '### Rekord Nowa oferta
+	Button2.style.display = "" '### Rekord Nowe zlecenie produkcyjne
+	Button3.style.display = "none" '### Rekord Nowe zamowienie
+	Button4.style.display = "" '### Rekord Otworz istniejacy dokument
+	Button5.style.display = "none" '### Rekord Zamowienie zbiorcze
+	Button6.style.display = "none" '### Rekord Nowa optymalizacja
+	Button7.style.display = "" '### Rekord Wyslij odbierz zlecenie
+	Button8.style.display = "none" '### Rekord Magazyn
+
+End Sub
+
+if len(document.location.search) = 0 then '### Okreslnie query stringu
+	Msgbox "Bіad wywolania pulpitu z programu." & vbcrlf & "Pulpit dziala tylko dla wersji WH OKNA 2003!",16,"Blad"
+else
+	QueryString = right(document.location.search,len(document.location.search) - 1)
+	QueryString = replace(QueryString,"%F3","у")
+
+
+	if instr(1,navigator.appVersion,"MSIE 7.0",1) <> 0 then
+		Tabelka = split(QueryString,"&")
+	else
+		Tabelka = split(QueryString,"%26")
+	end if
+
+	for each komorka in Tabelka
+		Wlasciwosc = split(komorka,"=")
+
+		if Wlasciwosc(0) = "mode" then  '### Okreslenie trybu pracy WH OKNA (0 - producent; 1 - dealer; 2 - producent z dealerami)
+			Tryb = Wlasciwosc(1)
+		end if
+
+		if Wlasciwosc(0) = "language" then '### Okreslenie lokalizacji
+			Lokalizacja = Wlasciwosc(1)
+		end if
+
+		if Wlasciwosc(0) = "conn" then '### Ustalenie connection stringu, serwera oraz bzy
+			ConnString = replace(right(komorka,len(komorka)-5),"%20"," ")
+			ConnString = replace(ConnString,"/","\")
+
+			temp1 = split(ConnString,";Server=")
+			temp2 = split(temp1(1),";")
+			Serwer = temp2(0)
+
+			temp1 = split(ConnString,";Database=")
+			temp2 = split(temp1(1),";")
+			Baza = temp2(0)
+		end if
+
+		if Wlasciwosc(0) = "wersja" then '### Okreslenie wersji programu
+			WersjaProgramu = Wlasciwosc(1)
+		end if
+
+	next
+
+	Set doc = CreateObject("MSXML2.DOMDocument")
+	if doc.Load("../" & Lokalizacja & "/" & Lokalizacja & ".xml") = True then
+		Set root = doc.selectSingleNode("root")
+	else
+		Msgbox "Brak pliku lokalizacji jezykowej XML dla wybranego jezyka!" & vbcrlf & "Lokalizacja pulpitu: Polska",48,"Ostrzezenie:"
+		doc.Load("../" & "PL/PL.xml")
+		Set root = doc.selectSingleNode("root")
+	end if
+
+	Select Case Tryb
+		Case 0 Call Producent(ConnString) '### Tryb pracy producenta
+		Case 2 Call ProdDeal(ConnString) '### Tryb pracy producenta z dealerami
+		Case Else Call Dealer(ConnString) '### Tryb pracy dealera
+	End Select
+	
+	if Serwer = "." then Serwer = root.selectSingleNode("data[@id='13']/data[@id='1' && @name='value']").text
+
+end if
+
+
+pusty = ""
+Menu1Header.innerText = root.selectSingleNode("data[@id='9']/data[@id='1' && @name='value']").text
+Menu2Header.innerText = root.selectSingleNode("data[@id='10']/data[@id='1' && @name='value']").text
+Menu3Header.innerText = root.selectSingleNode("data[@id='18']/data[@id='1' && @name='value']").text
+Menu4Header.innerText = root.selectSingleNode("data[@id='19']/data[@id='1' && @name='value']").text
+Dzisiaj.innerText = root.selectSingleNode("data[@id='11']/data[@id='1' && @name='value']").text & " " & FormatDateTime(Date,1)
+
+menu1.innerText = root.selectSingleNode("data[@id='1']/data[@id='1' && @name='value']").text
+menu1.href = root.selectSingleNode("data[@id='1']/data[@id='1' && @name='href']").text
+menu1.title = root.selectSingleNode("data[@id='1']/data[@id='1' && @name='title']").text
+img1.alt = menu1.title
+statusmenu1 = menu1.title
+
+menu2.innerText = root.selectSingleNode("data[@id='2']/data[@id='1' && @name='value']").text
+menu2.href = root.selectSingleNode("data[@id='2']/data[@id='1' && @name='href']").text
+menu2.title = root.selectSingleNode("data[@id='2']/data[@id='1' && @name='title']").text
+img2.alt = menu2.title
+statusmenu2 = menu2.title
+
+menu3.innerText = root.selectSingleNode("data[@id='3']/data[@id='1' && @name='value']").text
+menu3.href = root.selectSingleNode("data[@id='3']/data[@id='1' && @name='href']").text
+menu3.title = root.selectSingleNode("data[@id='3']/data[@id='1' && @name='title']").text
+img3.alt = menu3.title
+statusmenu3 = menu3.title
+
+menu4.innerText = root.selectSingleNode("data[@id='4']/data[@id='1' && @name='value']").text
+menu4.href = root.selectSingleNode("data[@id='4']/data[@id='1' && @name='href']").text
+menu4.title = root.selectSingleNode("data[@id='4']/data[@id='1' && @name='title']").text
+img4.alt = menu4.title
+statusmenu4 = menu4.title
+
+menu5.innerText = root.selectSingleNode("data[@id='5']/data[@id='1' && @name='value']").text
+menu5.href = root.selectSingleNode("data[@id='5']/data[@id='1' && @name='href']").text
+menu5.title = root.selectSingleNode("data[@id='5']/data[@id='1' && @name='title']").text
+img5.alt = menu5.title
+statusmenu5 = menu5.title
+
+menu6.innerText = root.selectSingleNode("data[@id='6']/data[@id='1' && @name='value']").text
+menu6.href = root.selectSingleNode("data[@id='6']/data[@id='1' && @name='href']").text
+menu6.title = root.selectSingleNode("data[@id='6']/data[@id='1' && @name='title']").text
+img6.alt = menu6.title
+statusmenu6 = menu6.title
+
+menu7.innerText = root.selectSingleNode("data[@id='7']/data[@id='1' && @name='value']").text
+menu7.href = root.selectSingleNode("data[@id='7']/data[@id='1' && @name='href']").text
+menu7.title = root.selectSingleNode("data[@id='7']/data[@id='1' && @name='title']").text
+img7.alt = menu7.title
+statusmenu7 = menu7.title
+
+menu8.innerText = root.selectSingleNode("data[@id='8']/data[@id='1' && @name='value']").text
+menu8.href = root.selectSingleNode("data[@id='8']/data[@id='1' && @name='href']").text
+menu8.title = root.selectSingleNode("data[@id='8']/data[@id='1' && @name='title']").text
+img8.alt = menu8.title
+statusmenu8 = menu8.title
+
+
+Tekst7.innerText = root.selectSingleNode("data[@id='12']/data[@id='1' && @name='value']").text
+Tekst8.innerText = root.selectSingleNode("data[@id='12']/data[@id='2' && @name='value']").text
+Tekst9.innerText = Serwer
+Tekst10.innerText = Baza
+
+
+if WersjaProgramu = "" then
+else
+	Wersja.innerText = root.selectSingleNode("data[@id='17']/data[@id='1' && @name='value']").text & " " & WersjaProgramu
+end if
+
+
+Set doc = nothing
+</SCRIPT>
       
     </body>
 </html>
